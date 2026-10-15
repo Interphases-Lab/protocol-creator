@@ -564,14 +564,14 @@ STEP_SPECS: dict[str, BuilderStepSpec] = {
             _unit_field("dc_current_mA", "DC current", "0", parse_optional_float, CURRENT_UNITS),
             _unit_field(
                 "start_frequency_Hz",
-                "Start frequency",
+                "Max frequency",
                 "10000",
                 parse_required_float,
                 FREQUENCY_UNITS,
             ),
             _unit_field(
                 "end_frequency_Hz",
-                "End frequency",
+                "Min frequency",
                 "0.1",
                 parse_required_float,
                 FREQUENCY_UNITS,
@@ -997,7 +997,7 @@ class AuroraStepCard(QFrame):
         self.loop_target_mode.addItem("Step number", "step")
         self.loop_target_mode.addItem("Tag", "tag")
         raw_mode = _as_text(raw_values.get("loop_to_mode", "tag")) or "tag"
-        self.loop_target_mode.setCurrentIndex(1 if raw_mode == "step" else 0)
+        self.loop_target_mode.setCurrentIndex(self.loop_target_mode.findData(raw_mode))
         self.loop_target_mode.currentIndexChanged.connect(self._on_loop_mode_changed)
         self.loop_target_mode.currentIndexChanged.connect(self._on_field_changed)
         self._add_compact_field("Loop target", self.loop_target_mode)
